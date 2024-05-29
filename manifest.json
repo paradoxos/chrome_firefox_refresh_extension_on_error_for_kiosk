@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Network Monitor and Reloader",
+  "version": "1.0",
+  "description": "Automatically detects network errors and reloads pages when the network is restored.",
+  "icons": {
+    "48": "48.png"
+  },
+  "permissions": [
+    "webNavigation",
+    "tabs",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
