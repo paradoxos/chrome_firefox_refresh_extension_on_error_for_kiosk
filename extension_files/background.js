@@ -31,12 +31,25 @@ setInterval(() => {
                 console.log("Network restored, reloading tab:", tabId);
                 chrome.tabs.reload(tabId);
                 chrome.storage.local.remove([tabId.toString(), key]);
+              } else {
+                console.log("Response not OK, not reloading:", response.status);
               }
             })
             .catch(error => {
-              console.error('Fetch error for URL:', items[key], "Error:", error);
+              console.log('Fetch error for URL:', items[key], "Error:", error.message);
             });
       }
     });
   });
 }, 5000);
+
+
+chrome.webNavigation.onErrorOccurred.addListener(details => {
+  console.log("Error occurred in tab:", details.tabId, "Error:", details.error);
+  if (['net::ERR_INTERNET_DISCONNECTED', 'net::ERR_NAME_NOT_RESOLVED', 'net::ERR_CONNECTION_REFUSED', 'net::ERR_ABORTED'].includes(details.error)) {
+    chrome.tabs.executeScript(details.tabId, {
+      code: `document.body.innerHTML = '<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10000; display: flex; align-items: center; justify-content: center; font-size: 20px;">Cannot connect. Check connection and <button onclick="location.reload();">retry</button>.</div>' + document.body.innerHTML;`
+    });
+  }
+});
+
