@@ -30,14 +30,14 @@
 //     }
 // });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    console.log('onMessage Triggered');
-    if (request.type === "error") {
-        const mainMessage = document.getElementById('main-message');
-        if (mainMessage) {
-            mainMessage.innerHTML = request.message;
-        } else {
-            console.log('Main message element not found, likely on a browser error page.');
-        }
-    }
-});
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+//     console.log('onMessage Triggered');
+//     if (request.type === "error") {
+//         const mainMessage = document.getElementById('main-message');
+//         if (mainMessage) {
+//             mainMessage.innerHTML = request.message;
+//         } else {
+//             console.log('Main message element not found, likely on a browser error page.');
+//         }
+//     }
+// });

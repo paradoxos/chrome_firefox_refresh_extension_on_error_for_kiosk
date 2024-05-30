@@ -10,14 +10,26 @@
       justify-content: center;
       height: 100vh;
       font-size: 24px;
-	font-weight:600;
-      color: red;
-      font-family: Arial, sans-serif;
+      font-weight: 600;
+      color: white;
+      font-family: Tahoma;
       margin: 0;
+      background: black;
+      flex-direction: column; /* Ensure contents are aligned vertically */
+    }
+    img {
+      height: 100px;
+      margin-bottom: 20px; /* Space between the image and the text */
+    }
+    #message {
+      text-align: center;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
-  ΜΑΣ ΣΥΓΧΩΡΕΙΤΕ ΤΟ ΜΗΧΑΝΗΜΑ ΔΕΝ ΕΙΝΑΙ ΔΙΑΘΕΣΙΜΟ ΑΥΤΗ ΤΗ ΣΤΙΓΜΗ
+<img src="exclamation-mark.png" alt="Maintenance Alert">
+<div id="message">Loading message...</div>
+<script src="maintenance.js"></script>
 </body>
 </html>
