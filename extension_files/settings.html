@@ -11,15 +11,122 @@
         input, button {
             padding: 10px;
             margin-top: 10px;
+            clear: both;
+            float: left;
+        }
+        #enableMaintenanceTab {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 62px;
+            height: 32px;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            background-color: #707070;
+            transition: background-color ease 0.3s;
+        }
+
+        #enableMaintenanceTab:before {
+            content: "on off";
+            display: block;
+            position: absolute;
+            z-index: 2;
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            left: 2px;
+            top: 2px;
+            font: 10px/28px Helvetica;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-indent: -22px;
+            word-spacing: 37px;
+            color: #fff;
+            text-shadow: -1px -1px rgba(0,0,0,0.15);
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+        }
+
+        #enableMaintenanceTab:checked {
+            background-color: #7ebb80;
+        }
+
+        #enableMaintenanceTab:checked:before {
+            left: 32px;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            padding: 5px;
+            clear: both;
+            float: left;
+            font-size: 20px;
+        }
+        .input-section {
+            margin: 20px 0px;
+            float: left;
+            position: relative;
+            width: 100%;
+        }
+        .input-section-dotted{
+            border-bottom: 1px dotted gray;
+        }
+        .notice-text-message {
+
+        }
+
+        .submit-configuration-button {
+            font-family: "Open Sans", sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #5e915f;
+            cursor: pointer;
+            border: 3px solid #7ebb80;
+            padding: 0.25em 0.5em;
+            box-shadow: 1px 1px 0px 0px #7ebb80, 2px 2px 0px 0px #7ebb80, 3px 3px 0px 0px #7ebb80, 4px 4px 0px 0px #7ebb80, 5px 5px 0px 0px #7ebb80;
+            position: relative;
+            margin: 25px 0px 0px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .submit-configuration-button:active {
+            box-shadow: 0px 0px 0px 0px;
+            top: 5px;
+            left: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .submit-configuration-button {
+                padding: 0.25em 0.75em;
+            }
         }
     </style>
+
 </head>
 <body>
 <h1>Settings</h1>
 <form id="settingsForm">
-    <label for="maintenanceMessage">Maintenance Message:</label><br>
-    <input type="text" id="maintenanceMessage" name="maintenanceMessage" style="width: 100%;"><br>
-    <button type="submit">Save</button>
+
+    <div class="input-section-dotted">
+        <label for="enableMaintenanceTab">Enable a Custom Maintenance Page:</label>
+        <input type="checkbox" id="enableMaintenanceTab" name="enableMaintenanceTab">
+    </div>
+
+    <div class="input-section">
+        <label for="maintenanceMessage">Message:</label>
+        <input type="text" id="maintenanceMessage" name="maintenanceMessage" style="width: 100%;">
+    </div>
+    <button class="submit-configuration-button" type="submit">Save</button>
 </form>
 <script src="settings.js"></script>
 </body>

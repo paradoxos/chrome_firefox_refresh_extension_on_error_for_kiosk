@@ -10,15 +10,29 @@ chrome.webNavigation.onCompleted.addListener(details => {
 }, {url: [{urlPrefix: 'http://'}, {urlPrefix: 'https://'}, {urlContains: 'local'}]});
 
 chrome.webNavigation.onErrorOccurred.addListener(details => {
+  // Log and handle all errors
+  console.log("Error occurred in tab:", details.tabId, "Error:", details.error);
   if (['net::ERR_INTERNET_DISCONNECTED', 'net::ERR_NAME_NOT_RESOLVED', 'net::ERR_CONNECTION_REFUSED', 'net::ERR_ABORTED'].includes(details.error)) {
-    chrome.tabs.create({ url: chrome.runtime.getURL('maintenance.html') }, function(tab) {
-      // Store the ID of the maintenance tab with reference to the original tab
-      chrome.storage.local.set({
-        [`${details.tabId}_maintenanceTabId`]: tab.id,
-        [details.tabId.toString()]: 'offline',
-        [`${details.tabId}_url`]: details.url
-      });
-      console.log("Maintenance tab created for tab:", details.tabId);
+    // Store offline status regardless of the maintenance tab setting
+    chrome.storage.local.set({
+      [`${details.tabId}_maintenanceTabId`]: null, // We set this to null initially
+      [details.tabId.toString()]: 'offline',
+      [`${details.tabId}_url`]: details.url
+    });
+
+    // Check if maintenance tab feature is enabled before creating a new tab
+    chrome.storage.local.get('enableMaintenanceTab', function(data) {
+      if (data.enableMaintenanceTab) {
+        chrome.tabs.create({ url: chrome.runtime.getURL('maintenance.html') }, function(tab) {
+          // Update the storage to reflect the created maintenance tab ID
+          chrome.storage.local.set({
+            [`${details.tabId}_maintenanceTabId`]: tab.id
+          });
+          console.log("Maintenance tab created for tab:", details.tabId);
+        });
+      } else {
+        console.log("Maintenance tab feature is disabled, no new tab created.");
+      }
     });
   }
 });
@@ -54,19 +68,3 @@ setInterval(() => {
     });
   });
 }, 5000);
-
-
-// chrome.webNavigation.onErrorOccurred.addListener(details => {
-//   console.log("Error occurred in tab:", details.tabId, "Error:", details.error);
-//   if (['net::ERR_INTERNET_DISCONNECTED', 'net::ERR_NAME_NOT_RESOLVED', 'net::ERR_CONNECTION_REFUSED', 'net::ERR_ABORTED'].includes(details.error)) {
-//     chrome.tabs.executeScript(details.tabId, {
-//       code: `document.body.innerHTML = '<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10000; display: flex; align-items: center; justify-content: center; font-size: 20px;">Cannot connect. Check connection and <button onclick="location.reload();">retry</button>.</div>' + document.body.innerHTML;`
-//     });
-//   }
-// });
-
-// chrome.webNavigation.onErrorOccurred.addListener(details => {
-//   if (details.error && ['net::ERR_INTERNET_DISCONNECTED', 'net::ERR_NAME_NOT_RESOLVED'].includes(details.error)) {
-//     chrome.tabs.create({ url: 'maintenance.html' });
-//   }
-// });
