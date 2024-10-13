@@ -1,34 +1,34 @@
 {
   "manifest_version": 3,
   "name": "Network Monitor and Reloader For KIOSK Machines",
-  "version": "1.1",
+  "version": "1.4.10",
   "description": "Automatically detects network errors and reloads pages when the network is restored.",
   "icons": {
     "48": "48.png"
   },
   "permissions": [
     "webNavigation",
-    "tabs",
     "storage",
-    "alarms"
+    "scripting"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
-  "options_page": "settings.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+
   "host_permissions": [
     "*://*/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "run_at": "document_idle"
-    }
-  ],
+  "options_page": "settings.html",
   "web_accessible_resources": [
     {
       "resources": ["maintenance.html", "maintenance.js", "exclamation-mark.png"],

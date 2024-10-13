@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.4.10] - 2024-10-13
+- Added multiple new network and page checks.
+
 ## [1.0.1] - 2024-05-30
 - Add and Edit Maintenance Mode Message in configuration.
 
